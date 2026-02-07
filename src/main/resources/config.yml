@@ -1,0 +1,46 @@
+# World name where your hub lives (usually "world")
+hubWorld: "world"
+
+# Teleport destination (your platform)
+hubX: 0.5
+hubY: 199.0
+hubZ: 0.5
+hubYaw: 0.0
+hubPitch: 0.0
+
+# GUI behavior
+openMenuDelayTicks: 2
+reopenMenuDelayTicks: 10
+pingIntervalTicks: 100      # 5 seconds
+pingTimeoutMs: 800
+
+# Plugin message channel used for proxy connect.
+# Velocity supports BungeeCord messaging; modern recommended channel is bungeecord:main,
+# but we register and can use both.
+proxyChannelPrimary: "bungeecord:main"
+proxyChannelFallback: "BungeeCord"
+
+menuTitle: "Select a server"
+
+# Amount of servers to display on one page.
+serversPerPage: 8
+
+# Your destinations
+# key = velocity server name (must match velocity.toml [servers] key)
+servers:
+  example:
+    displayName: "&aExample server 1"
+    description:
+      - "&7Example description line 1"
+      - "&cSuper cool description line 2"
+    icon: "CRAFTING_TABLE"
+    pingHost: "172.18.0.10"
+    pingPort: 26500
+
+  minigame:
+    displayName: "&bSome different server"
+    description:
+      - "&7Click to join"
+    icon: "DIAMOND_SWORD"
+    pingHost: "172.18.0.11"
+    pingPort: 26501

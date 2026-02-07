@@ -1,0 +1,12 @@
+name: hubrouter
+version: '1.0-SNAPSHOT'
+main: ax.nk.hubrouter.HubRouter
+api-version: '1.21'
+commands:
+  server:
+    description: Open server selector
+    usage: /server
+    permission: hubrouter.use
+permissions:
+  hubrouter.use:
+    default: true
