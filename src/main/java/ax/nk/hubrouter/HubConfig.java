@@ -67,7 +67,7 @@ public record HubConfig(
                 ));
             }
         }
-        
+
         return new HubConfig(
                 hubWorld,
                 hubX, hubY, hubZ,

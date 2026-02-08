@@ -11,6 +11,7 @@ public final class SelectorMenuHolder implements InventoryHolder {
     private final Map<Integer, String> slotToServer = new HashMap<>();
     private final Map<Integer, Integer> navSlots = new HashMap<>();
     private final Set<Integer> refreshSlots = new HashSet<>();
+    private final Set<Integer> disconnectSlots = new HashSet<>();
 
     public SelectorMenuHolder(int page) {
         this.page = page;
@@ -30,6 +31,10 @@ public final class SelectorMenuHolder implements InventoryHolder {
 
     public Set<Integer> refreshSlots() {
         return refreshSlots;
+    }
+
+    public Set<Integer> disconnectSlots() {
+        return disconnectSlots;
     }
 
     @Override

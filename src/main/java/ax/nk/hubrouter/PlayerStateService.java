@@ -6,7 +6,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public final class PlayerStateService {
 
-    public enum State { VIEWING, CONNECTING }
+    public enum State { VIEWING, CONNECTING, DISCONNECTING }
 
     private final Map<UUID, State> state = new ConcurrentHashMap<>();
 

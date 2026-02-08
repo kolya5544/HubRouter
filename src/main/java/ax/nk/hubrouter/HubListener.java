@@ -84,6 +84,14 @@ public final class HubListener implements Listener {
             return;
         }
 
+        // Disconnect
+        if (holder.disconnectSlots().contains(slot)) {
+            playerState.set(p.getUniqueId(), PlayerStateService.State.DISCONNECTING);
+            p.closeInventory();
+            p.kick(net.kyori.adventure.text.Component.text("Disconnected."));
+            return;
+        }
+
         // Server click
         String server = holder.slotToServer().get(slot);
         if (server != null) {
@@ -96,8 +104,10 @@ public final class HubListener implements Listener {
         Player p = (Player) e.getPlayer();
         if (!menus.isSelectorInventory(e.getInventory())) return;
 
-        // If player is connecting, don't reopen immediately
-        if (playerState.get(p.getUniqueId()) == PlayerStateService.State.CONNECTING) return;
+        PlayerStateService.State st = playerState.get(p.getUniqueId());
+
+        // If player is connecting (or disconnecting), don't reopen immediately
+        if (st == PlayerStateService.State.CONNECTING || st == PlayerStateService.State.DISCONNECTING) return;
 
         Bukkit.getScheduler().runTaskLater(plugin, () -> {
             if (!p.isOnline()) return;

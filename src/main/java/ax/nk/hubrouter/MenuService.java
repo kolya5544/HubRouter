@@ -36,7 +36,8 @@ public final class MenuService {
         int safePage = Math.max(0, Math.min(page, totalPages - 1));
 
         SelectorMenuHolder holder = new SelectorMenuHolder(safePage);
-        Inventory inv = Bukkit.createInventory(holder, 54, Component.text(cfg.menuTitle()));
+        // 5 rows (45 slots) so there isn't an extra bottom row.
+        Inventory inv = Bukkit.createInventory(holder, 45, Component.text(cfg.menuTitle()));
 
         render(inv, holder, safePage, totalPages);
         playerState.set(player.getUniqueId(), PlayerStateService.State.VIEWING);
@@ -123,10 +124,12 @@ public final class MenuService {
         holder.slotToServer().clear();
         holder.navSlots().clear();
         holder.refreshSlots().clear();
+        holder.disconnectSlots().clear();
 
+        // With a 5-row inventory, we render server tiles only in rows 0..2 (3 rows).
+        // That leaves row 4 for controls, and row 3 as breathing room (still filled with gray panes).
         int[][] anchors = new int[][]{
-                {0, 0}, {2, 0}, {4, 0}, {6, 0},
-                {0, 2}, {2, 2}, {4, 2}, {6, 2}
+                {0, 0}, {2, 0}, {4, 0}, {6, 0}
         };
 
         for (int i = 0; i < pageServers.size() && i < anchors.length; i++) {
@@ -156,11 +159,14 @@ public final class MenuService {
 
 
     private void renderControls(Inventory inv, SelectorMenuHolder holder, int page, int totalPages) {
-        // Controls row(s): use row 5 slots:
-        // 45 prev, 49 page, 53 next
-        int prev = 45;
-        int pageInfo = 49;
-        int next = 53;
+        // Controls row is now the very bottom row of a 5-row inventory: slots 36..44.
+        // Keep it symmetrical:
+        // 36 prev, 39 disconnect, 40 page, 41 refresh, 44 next
+        int prev = 36;
+        int disconnect = 39;
+        int pageInfo = 40;
+        int refresh = 41;
+        int next = 44;
 
         if (page > 0) {
             ItemStack prevItem = new ItemStack(Material.ARROW);
@@ -174,6 +180,9 @@ public final class MenuService {
         } else {
             inv.setItem(prev, named(Material.GRAY_DYE, Component.text(" ")));
         }
+
+        inv.setItem(disconnect, named(Material.RED_DYE, AMP.deserialize("&c&lDISCONNECT")));
+        holder.disconnectSlots().add(disconnect);
 
         inv.setItem(pageInfo, named(Material.PAPER, Component.text("Page " + (page + 1) + " / " + totalPages)));
 
@@ -190,8 +199,6 @@ public final class MenuService {
             inv.setItem(next, named(Material.GRAY_DYE, Component.text(" ")));
         }
 
-        // Optional refresh button
-        int refresh = 50;
         inv.setItem(refresh, named(Material.CLOCK, Component.text("Refresh")));
         holder.refreshSlots().add(refresh);
     }
